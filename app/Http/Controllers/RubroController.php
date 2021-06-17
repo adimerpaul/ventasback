@@ -24,7 +24,6 @@ class RubroController extends Controller
         if ($request->hasFile('imagen')) {
 //            return "si";
             $file=$request->file('imagen');
-
             $nombreArchivo = time().".".$file->getClientOriginalExtension();
 //        return $nombreArchivo;
             $file->move(\public_path('imagenes'), $nombreArchivo);
