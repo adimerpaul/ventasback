@@ -14,7 +14,7 @@ class DosageController extends Controller
      */
     public function index()
     {
-        //
+        return Dosage::all();
     }
 
     /**
@@ -25,7 +25,8 @@ class DosageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dosage=Dosage::create($request->all());
+        return $dosage;
     }
 
     /**
@@ -36,7 +37,7 @@ class DosageController extends Controller
      */
     public function show(Dosage $dosage)
     {
-        //
+        return $dosage;
     }
 
     /**
@@ -48,7 +49,8 @@ class DosageController extends Controller
      */
     public function update(Request $request, Dosage $dosage)
     {
-        //
+        $dosage->update($request->all());
+        return $dosage;
     }
 
     /**
@@ -59,6 +61,7 @@ class DosageController extends Controller
      */
     public function destroy(Dosage $dosage)
     {
-        //
+        $dosage->delete();
+        return response()->json(['res'=>'Borrado exitoso'],200);
     }
 }

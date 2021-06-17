@@ -17,6 +17,7 @@ class Product extends Model
         "activo",
         "rubro_id",
     ];
+    protected $hidden = ["created_at", "updated_at"];
     public function rubro(){
         return $this->belongsTo(Rubro::class);
     }
