@@ -24,5 +24,6 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::apiResource('/product',\App\Http\Controllers\ProductController::class);
     Route::apiResource('/rubro',\App\Http\Controllers\RubroController::class);
+    Route::apiResource('/dosage',\App\Http\Controllers\DosageController ::class);
     Route::post('/upload',[\App\Http\Controllers\RubroController::class,'upload']);
 });

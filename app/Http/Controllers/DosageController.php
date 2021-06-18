@@ -59,9 +59,18 @@ class DosageController extends Controller
      * @param  \App\Models\Dosage  $dosage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Dosage $dosage)
+    public function destroy($id)
     {
+        $dosage=Dosage::find($id);
         $dosage->delete();
         return response()->json(['res'=>'Borrado exitoso'],200);
     }
+
+    public function validar(){
+        //deshabilitar las vencidas
+        //debe de haber solo 1 activo
+        //si no ay activo verificar si existe alguno en fecha y activarlo 
+        // sino cumple alguno no se factura 
+        $res=Dosage::find()->where('hasta','<',curdate())->where('activo',true);
+    } 
 }

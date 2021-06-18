@@ -24,7 +24,7 @@ class CreateDosagesTable extends Migration
             $table->string('leyenda');
             $table->boolean('activo')->default(false);
             $table->string('nrofactura');
-            $table->unsignedBigInteger('empresa_id');
+            $table->unsignedBigInteger('empresa_id')->default(1);
             $table->foreign('empresa_id')->references('id')->on('empresas');
             $table->timestamps();
         });
