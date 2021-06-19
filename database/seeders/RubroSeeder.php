@@ -17,12 +17,12 @@ class RubroSeeder extends Seeder
         DB::table('rubros')->insert([
             [
                 "nombre"=>'Platos',
-                "imagen"=>'img/1.png',
+                "imagen"=>'comida.png',
                 "color"=>'red'
             ],
             [
                 "nombre"=>'Bebidas',
-                "imagen"=>'img/2.png',
+                "imagen"=>'bebida.png',
                 "color"=>'blue'
             ],
         ]);

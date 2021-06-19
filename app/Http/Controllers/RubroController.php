@@ -117,7 +117,7 @@ class RubroController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {   
+    {
         $rubro=Rubro::find($id);
         $rubro->delete();
         return response()->json(['res'=>'Borrado exitoso'],200);
