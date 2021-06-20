@@ -14,7 +14,8 @@ class UserController extends Controller
         }
         $user=User::where('email',$request->email)->firstOrfail();
         $token=$user->createToken('auth_token')->plainTextToken;
-        return response()->json(['token'=>$token,'user'=>$user],200);
+        $user2=User::where('id',$user->id)->with('usuariopermisos')->get();
+        return response()->json(['token'=>$token,'user'=>$user2],200);
     }
     public function register(Request $request){
 
@@ -24,6 +25,7 @@ class UserController extends Controller
         return response()->json(['res'=>'Usuario salio del sistema'],200);
     }
     public function me(Request $request){
-        return $request->user();
+//        return $request->user();
+        return User::where('id',$request->user()->id)->with('usuariopermisos')->get();
     }
 }
