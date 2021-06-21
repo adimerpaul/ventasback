@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
             RubroSeeder::class,
             ProductSeeder::class,
             PermisoSeeder::class,
-            UsuariopermisoSeeder::class
+            UsuariopermisoSeeder::class,
+            ClientSeeder::class,
+            DeliveriSeeder::class,
         ]);
     }
 }

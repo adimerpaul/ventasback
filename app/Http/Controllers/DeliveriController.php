@@ -14,7 +14,7 @@ class DeliveriController extends Controller
      */
     public function index()
     {
-        //
+        return Deliveri::all();
     }
 
     /**
