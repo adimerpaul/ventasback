@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,9 +19,31 @@ class UserController extends Controller
         $user2=User::where('id',$user->id)->with('usuariopermisos')->get();
         return response()->json(['token'=>$token,'user'=>$user2],200);
     }
-    public function register(Request $request){
 
+    public function listuser(){
+        return User::select('id','name','email')->with('usuariopermisos')->get();
     }
+
+    public function register(Request $request){
+        $user=User::create(['name'=>$request->name,'email'=>$request->email,'password'=>Hash::make($request->password),'empresa_id'=>1]);
+        foreach ($request->group as $row) {
+            DB::table('usuariopermisos')->insert(['user_id'=>$user->id,'permiso_id'=>$row]);
+        }
+        return $user; 
+    }
+
+    public function modificar(Request $request){
+        $user=User::find($request->id);
+        $user->update(['name'=>$request->name]);
+        return $user;
+    }
+
+    public function modpass(Request $request){
+        $user=User::find($request->id);
+        $user->update(['password'=>Hash::make($request->password)]);
+        return $user;
+    }
+
     public function logout(Request $request){
         $request->user()->currentAccessToken()->delete();
         return response()->json(['res'=>'Usuario salio del sistema'],200);

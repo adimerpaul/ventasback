@@ -15,6 +15,7 @@ class ClientController extends Controller
     public function index()
     {
         //
+        return Client::all();
     }
 
     /**
@@ -26,6 +27,10 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         //
+        if(Client::find($request->cinit))
+        return response()->json(['res'=>'Cliente ya registrado'],406);
+        $client=Client::create($request->all());
+        return $client;
     }
 
     /**
@@ -37,6 +42,7 @@ class ClientController extends Controller
     public function show(Client $client)
     {
         //
+        return $client;
     }
 
     /**
@@ -46,9 +52,11 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request)
     {
-        //
+        $client=Client::find($request->id);
+        $client->update(['nombrerazon'=>$request->nombrerazon]);
+        return $client;
     }
 
     /**
@@ -57,8 +65,15 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
         //
+        $client=Client::find($id);
+        $client->delete();
+        return response()->json(['res'=>'Borrado exitoso'],200);
+    }
+
+    public function lista($ci){
+        return Client::where('cinit','like',$ci.'%')->limit(10)->get();
     }
 }

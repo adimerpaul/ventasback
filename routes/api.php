@@ -21,9 +21,15 @@ Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
 Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/logout',[\App\Http\Controllers\UserController::class,'logout']);
     Route::post('/register',[\App\Http\Controllers\UserController::class,'register']);
+    Route::post('/modificar',[\App\Http\Controllers\UserController::class,'modificar']);
+    Route::post('/modpass',[\App\Http\Controllers\UserController::class,'modpass']);
+    Route::post('/listuser',[\App\Http\Controllers\UserController::class,'listuser']);
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::apiResource('/product',\App\Http\Controllers\ProductController::class);
     Route::apiResource('/rubro',\App\Http\Controllers\RubroController::class);
     Route::apiResource('/dosage',\App\Http\Controllers\DosageController ::class);
+    Route::apiResource('/client',\App\Http\Controllers\ClientController ::class);
+    Route::post('/listclient/{ci}',[\App\Http\Controllers\ClientController ::class,'lista']);
+    Route::apiResource('/permiso',\App\Http\Controllers\PermisoController ::class);
     Route::post('/upload',[\App\Http\Controllers\RubroController::class,'upload']);
 });
