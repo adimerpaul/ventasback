@@ -34,7 +34,11 @@ class UserController extends Controller
 
     public function modificar(Request $request){
         $user=User::find($request->id);
-        $user->update(['name'=>$request->name]);
+        $user->update(['name'=>$request->name,'email'=>$request->email]);
+        DB::table('usuariopermisos')->where('user_id',$request->id)->delete();
+        foreach ($request->group as $row) {
+            DB::table('usuariopermisos')->insert(['user_id'=>$user->id,'permiso_id'=>$row]);
+        }
         return $user;
     }
 
@@ -42,6 +46,12 @@ class UserController extends Controller
         $user=User::find($request->id);
         $user->update(['password'=>Hash::make($request->password)]);
         return $user;
+    }
+
+    public function eliminar($id){
+        DB::table('usuariopermisos')->where('user_id',$id)->delete();
+        return DB::table('users')->where('id',$id)->delete();
+    
     }
 
     public function logout(Request $request){

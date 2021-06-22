@@ -23,6 +23,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/register',[\App\Http\Controllers\UserController::class,'register']);
     Route::post('/modificar',[\App\Http\Controllers\UserController::class,'modificar']);
     Route::post('/modpass',[\App\Http\Controllers\UserController::class,'modpass']);
+    Route::post('/eliminar/{id}',[\App\Http\Controllers\UserController::class,'eliminar']);
     Route::post('/listuser',[\App\Http\Controllers\UserController::class,'listuser']);
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::apiResource('/product',\App\Http\Controllers\ProductController::class);
