@@ -23,6 +23,7 @@ class SaleController extends Controller
     public function index()
     {
         //
+       
     }
 
     /**
@@ -173,6 +174,13 @@ class SaleController extends Controller
     }
     public function recibo($id){
         echo "FACTURA $id";
+    }
+
+    public function buscar($fecha){
+        return Sale::with('user')->with('client')->with('details')->where('fecha',$fecha)->get();
+        //->join('users','user_id','=','users.id')
+        //->join('clients','client_id','=','clients.id')
+        //->join('details','sales.id','=','details.id')->where('fecha',$fecha)->get();
     }
 
     /**

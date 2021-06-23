@@ -33,6 +33,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::apiResource('/dosage',\App\Http\Controllers\DosageController ::class);
     Route::apiResource('/client',\App\Http\Controllers\ClientController ::class);
     Route::post('/listclient/{ci}',[\App\Http\Controllers\ClientController ::class,'lista']);
+    Route::post('/listabuscar/{fecha}',[\App\Http\Controllers\SaleController ::class,'buscar']);
     Route::apiResource('/permiso',\App\Http\Controllers\PermisoController ::class);
     Route::post('/upload',[\App\Http\Controllers\RubroController::class,'upload']);
 });
