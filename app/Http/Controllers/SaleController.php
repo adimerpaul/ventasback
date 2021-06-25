@@ -178,9 +178,6 @@ class SaleController extends Controller
 
     public function buscar($fecha){
         return Sale::with('user')->with('client')->with('details')->where('fecha',$fecha)->get();
-        //->join('users','user_id','=','users.id')
-        //->join('clients','client_id','=','clients.id')
-        //->join('details','sales.id','=','details.id')->where('fecha',$fecha)->get();
     }
 
     /**
@@ -215,5 +212,20 @@ class SaleController extends Controller
     public function destroy(Sale $sale)
     {
         //
+    }
+
+    public function anular($id){
+        $sale= Sale::find($id);
+        $sale->estado='ANULADO';
+        $sale->total=0;
+        return $sale->save();
+    }
+
+    public function imprimir(){
+        
+    }
+
+    public function reporteusuario($id,$fecha){
+
     }
 }
