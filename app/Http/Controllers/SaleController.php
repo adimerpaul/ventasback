@@ -214,18 +214,39 @@ class SaleController extends Controller
         //
     }
 
-    public function anular($id){
-        $sale= Sale::find($id);
+    public function anular(Request $request){
+        $sale= Sale::find($request->$id);
         $sale->estado='ANULADO';
         $sale->total=0;
-        return $sale->save();
+        $sale->save();
+
+        $anular=new Anulado();
+        $anular->fecha=date('Y-m-d');
+        $anular->motivo=$request->motivo;
+        $anular->user_id=$request->user_id;
+        $anular->sale_id=$request->id;
+        return $anular->save();
     }
 
     public function imprimir(){
         
     }
 
-    public function reporteusuario($id,$fecha){
+    public function resumen(Request $request){
+        $id=$request->id;
+        $fecha=$request->fecha;
+        return Sale::with('client')->where('user_id',$id)->where('fecha',$fecha)->get();
+    }
 
+    public function resproducto(Request $request){
+        $id=$request->id;
+        $fecha=$request->fecha;
+        return DB::table('details')
+        ->select('product_id','nombreproducto', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
+        ->join('sales','sales.id','=','details.sale_id')
+        ->where('sales.user_id',$id)
+        ->where('sales.fecha',$fecha)
+        ->groupBy('product_id','nombreproducto','precio')
+        ->get();
     }
 }

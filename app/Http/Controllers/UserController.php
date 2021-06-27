@@ -62,4 +62,8 @@ class UserController extends Controller
 //        return $request->user();
         return User::where('id',$request->user()->id)->with('usuariopermisos')->get();
     }
+
+    public function lusuario(){
+        return DB::table('users')->select('id','name')->get();
+    }
 }
