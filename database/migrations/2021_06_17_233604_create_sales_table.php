@@ -23,7 +23,7 @@ class CreateSalesTable extends Migration
             $table->string("delivery")->default('');
               $table->string("estado")->default('ACTIVO');
               $table->string("nrocomprobante");
-            $table->string("monto");
+            $table->double("monto",11,2);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('dosage_id');
