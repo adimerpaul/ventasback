@@ -7,6 +7,7 @@ use App\Models\Detail;
 use App\Models\Dosage;
 use App\Models\Empresa;
 use App\Models\Product;
+use App\Models\Anulado;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -328,17 +329,16 @@ class SaleController extends Controller
     }
 
     public function anular(Request $request){
-        $sale= Sale::find($request->$id);
+        $sale=Sale::find($request->id);
         $sale->estado='ANULADO';
         $sale->total=0;
         $sale->save();
 
-        $anular=new Anulado();
-        $anular->fecha=date('Y-m-d');
-        $anular->motivo=$request->motivo;
-        $anular->user_id=$request->user_id;
-        $anular->sale_id=$request->id;
-        return $anular->save();
+        $anular=array(
+        'motivo'=>$request->motivo,
+        'user_id'=>$request->user_id,
+        'sale_id'=>$request->id);
+        return Anulado::create($anular);
     }
 
     public function imprimir(){
@@ -359,7 +359,20 @@ class SaleController extends Controller
         ->join('sales','sales.id','=','details.sale_id')
         ->where('sales.user_id',$id)
         ->where('sales.fecha',$fecha)
+        ->where('sales.estado','ACTIVO')
         ->groupBy('product_id','nombreproducto','precio')
         ->get();
+    }
+
+    public function libro(Request $request){
+        return DB::select('        
+        SELECT fecha,nrocomprobante,d.nroautorizacion,IF(estado="ACTIVO","V","A") as estado,cinit,c.nombrerazon, 
+        "0" as ice, "0" as exenta,"0" as tasa,"0" as rebaja,(total * 0.13) as fiscal, codigocontrol,total
+        FROM sales s
+        INNER JOIN dosages d ON d.id=s.dosage_id
+        INNER JOIN clients c ON s.client_id=c.id
+        WHERE MONTH(s.fecha)="'.$request->mes.'" AND YEAR(s.fecha)="'.$request->anio.'" 
+        AND s.tipo="F" 
+        ORDER BY s.id asc');
     }
 }
