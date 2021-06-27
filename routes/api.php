@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
-Route::group(['middleware'=>'auth:sanctum'],function (){
+    Route::post('/libro',[\App\Http\Controllers\SaleController ::class,'libro']);
+    Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/logout',[\App\Http\Controllers\UserController::class,'logout']);
     Route::post('/register',[\App\Http\Controllers\UserController::class,'register']);
     Route::post('/modificar',[\App\Http\Controllers\UserController::class,'modificar']);
