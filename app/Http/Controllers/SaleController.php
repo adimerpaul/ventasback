@@ -365,14 +365,14 @@ class SaleController extends Controller
     }
 
     public function libro(Request $request){
-        return DB::select('        
-        SELECT fecha,nrocomprobante,d.nroautorizacion,IF(estado="ACTIVO","V","A") as estado,cinit,c.nombrerazon, 
+        return DB::select('
+        SELECT fecha,nrocomprobante,d.nroautorizacion,IF(estado="ACTIVO","V","A") as estado,cinit,c.nombrerazon,
         "0" as ice, "0" as exenta,"0" as tasa,"0" as rebaja,(total * 0.13) as fiscal, codigocontrol,total
         FROM sales s
         INNER JOIN dosages d ON d.id=s.dosage_id
         INNER JOIN clients c ON s.client_id=c.id
-        WHERE MONTH(s.fecha)="'.$request->mes.'" AND YEAR(s.fecha)="'.$request->anio.'" 
-        AND s.tipo="F" 
+        WHERE MONTH(s.fecha)="'.(int)$request->mes.'" AND YEAR(s.fecha)="'.(int)$request->anio.'"
+        AND s.tipo="F"
         ORDER BY s.id asc');
     }
 }
