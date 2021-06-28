@@ -37,6 +37,7 @@ Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
     Route::post('/anular',[\App\Http\Controllers\SaleController ::class,'anular']);
     Route::post('/resumen',[\App\Http\Controllers\SaleController ::class,'resumen']);
     Route::post('/resproducto',[\App\Http\Controllers\SaleController ::class,'resproducto']);
+    Route::post('/imprimirresumen',[\App\Http\Controllers\SaleController ::class,'imprimirresumen']);
     Route::post('/listclient/{ci}',[\App\Http\Controllers\ClientController ::class,'lista']);
     Route::post('/listabuscar/{fecha}',[\App\Http\Controllers\SaleController ::class,'buscar']);
     Route::apiResource('/permiso',\App\Http\Controllers\PermisoController ::class);
