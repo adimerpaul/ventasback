@@ -16,10 +16,10 @@ class EmpresaSeeder extends Seeder
     {
         DB::table('empresas')->insert([
             [
-                "nombre"=>'Sabor Peru',
+                "nombre"=>'SABOR PERU',
                 "nit"=>'1010',
-                "telefono"=>'1010',
-                "direccion"=>'avenida tacna',
+                "telefono"=>'75637071',
+                "direccion"=>'Av. Tacna, Jaen y Tomas Frias',
             ]
         ]);
     }
