@@ -372,7 +372,20 @@ class SaleController extends Controller
         cross join (select @numero := 0) r
         INNER JOIN dosages d ON d.id=s.dosage_id
         INNER JOIN clients c ON s.client_id=c.id
-        WHERE MONTH(s.fecha)="'.(int)$request->mes.'" AND YEAR(s.fecha)="'.(int)$request->anio.'"
+        WHERE MONTH(s.fecha)="'.$request->mes.'" AND YEAR(s.fecha)="'.$request->anio.'"
+        AND s.tipo="F"
+        ORDER BY s.id asc');
+    }
+
+    public function libro2(Request $request){
+        return DB::select('
+        SELECT (@numero:=@numero+1) as nro,fecha,nrocomprobante,d.nroautorizacion,IF(estado="ACTIVO","V","A") as estado,cinit,c.nombrerazon,
+        "0" as ice, "0" as exenta,"0" as tasa,"0" as rebaja,(total * 0.13) as fiscal, codigocontrol,total
+        FROM sales s
+        cross join (select @numero := 0) r
+        INNER JOIN dosages d ON d.id=s.dosage_id
+        INNER JOIN clients c ON s.client_id=c.id
+        WHERE s.fecha="'.$request->fecha.'"
         AND s.tipo="F"
         ORDER BY s.id asc');
     }

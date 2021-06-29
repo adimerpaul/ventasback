@@ -66,4 +66,11 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(['res'=>'Borrado exitoso'],200);
     }
+
+    public function productadd(Request $request){
+        $product=Product::find($request->id);
+        $product->cantidad=$request->cantidad;
+        return $product->save();
+
+    }
 }

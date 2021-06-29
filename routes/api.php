@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 //});
 Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
     Route::post('/libro',[\App\Http\Controllers\SaleController ::class,'libro']);
+    Route::post('/libro2',[\App\Http\Controllers\SaleController ::class,'libro2']);
     Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/logout',[\App\Http\Controllers\UserController::class,'logout']);
     Route::post('/register',[\App\Http\Controllers\UserController::class,'register']);
@@ -36,6 +37,7 @@ Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
     Route::apiResource('/client',\App\Http\Controllers\ClientController ::class);
     Route::post('/anular',[\App\Http\Controllers\SaleController ::class,'anular']);
     Route::post('/resumen',[\App\Http\Controllers\SaleController ::class,'resumen']);
+    Route::post('/productadd',[\App\Http\Controllers\ProductController ::class,'productadd']);
     Route::post('/resproducto',[\App\Http\Controllers\SaleController ::class,'resproducto']);
     Route::post('/imprimirresumen',[\App\Http\Controllers\SaleController ::class,'imprimirresumen']);
     Route::post('/listclient/{ci}',[\App\Http\Controllers\ClientController ::class,'lista']);
