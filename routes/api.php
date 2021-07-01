@@ -18,8 +18,6 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
-    Route::post('/libro',[\App\Http\Controllers\SaleController ::class,'libro']);
-    Route::post('/libro2',[\App\Http\Controllers\SaleController ::class,'libro2']);
     Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/logout',[\App\Http\Controllers\UserController::class,'logout']);
     Route::post('/register',[\App\Http\Controllers\UserController::class,'register']);
@@ -28,6 +26,8 @@ Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
     Route::post('/eliminar/{id}',[\App\Http\Controllers\UserController::class,'eliminar']);
     Route::post('/listuser',[\App\Http\Controllers\UserController::class,'listuser']);
     Route::post('/lusuario',[\App\Http\Controllers\UserController::class,'lusuario']);
+    Route::post('/libro',[\App\Http\Controllers\SaleController ::class,'libro']);
+    Route::post('/libro2',[\App\Http\Controllers\SaleController ::class,'libro2']);
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::apiResource('/product',\App\Http\Controllers\ProductController::class);
     Route::apiResource('/sale',\App\Http\Controllers\SaleController::class);
