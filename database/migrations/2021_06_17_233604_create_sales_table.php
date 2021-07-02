@@ -20,7 +20,8 @@ class CreateSalesTable extends Migration
               $table->string("tipo");
               $table->string("codigocontrol");
               $table->string("codigoqr");
-            $table->string("delivery")->default('');
+              $table->string("delivery")->default('');
+            
               $table->string("estado")->default('ACTIVO');
               $table->string("nrocomprobante");
             $table->double("monto",11,2);

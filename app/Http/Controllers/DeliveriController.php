@@ -26,6 +26,8 @@ class DeliveriController extends Controller
     public function store(Request $request)
     {
         //
+        $deliveri=Deliveri::create($request->all());
+        return $deliveri;
     }
 
     /**
@@ -49,6 +51,9 @@ class DeliveriController extends Controller
     public function update(Request $request, Deliveri $deliveri)
     {
         //
+        $deliveri->update($request->all());
+        return $deliveri;
+    
     }
 
     /**

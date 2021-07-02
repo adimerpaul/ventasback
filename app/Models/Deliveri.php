@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Deliveri extends Model
 {
     use HasFactory;
+    protected $fillable=[
+    'nombre'
+];
+protected $hidden = ["created_at", "updated_at"];
 }
