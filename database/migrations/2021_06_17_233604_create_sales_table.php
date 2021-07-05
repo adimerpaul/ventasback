@@ -21,6 +21,7 @@ class CreateSalesTable extends Migration
               $table->string("codigocontrol");
               $table->string("codigoqr");
               $table->string("delivery")->default('');
+              $table->boolean("cobrar")->default(false);
             
               $table->string("estado")->default('ACTIVO');
               $table->string("nrocomprobante");

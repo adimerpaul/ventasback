@@ -42,6 +42,8 @@ Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
     Route::post('/imprimirresumen',[\App\Http\Controllers\SaleController ::class,'imprimirresumen']);
     Route::post('/listclient/{ci}',[\App\Http\Controllers\ClientController ::class,'lista']);
     Route::post('/listabuscar/{fecha}',[\App\Http\Controllers\SaleController ::class,'buscar']);
+    Route::post('/listabuscar2',[\App\Http\Controllers\SaleController ::class,'buscar2']);
+    Route::post('/informe',[\App\Http\Controllers\SaleController ::class,'informe']);
     Route::apiResource('/permiso',\App\Http\Controllers\PermisoController ::class);
     Route::post('/upload',[\App\Http\Controllers\RubroController::class,'upload']);
 });

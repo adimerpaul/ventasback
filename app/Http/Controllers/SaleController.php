@@ -100,8 +100,10 @@ class SaleController extends Controller
         }
         if ($request->delivery=='' || $request->delivery==null){
             $delivery='';
+            $cobrar=false;
         }else{
             $delivery=$request->delivery;
+            $cobrar=true;
         }
 
         if ($tipo=='F'){
@@ -123,6 +125,7 @@ class SaleController extends Controller
             $codigoqr= $empresa->nit."|".$numero_factura.'|'.$numero_autorizacion.'|'.date('Ymd').'|'.$monto_compra.'|'.$monto_compra.'|'.$codigocontrol.'|'.$request->cinit.'|0|0|0|0.00';
             $sale->codigoqr=$codigoqr;
             $sale->delivery=$delivery;
+            $sale->cobrar=$cobrar;
             $sale->nrocomprobante=$numero_factura;
             $sale->monto=$request->monto;
             $sale->user_id=$request->user()->id;
@@ -294,6 +297,11 @@ class SaleController extends Controller
         return Sale::with('user')->with('client')->with('details')->where('fecha',$fecha)->get();
     }
 
+    public function buscar2(Request $request){
+        return Sale::with('user')->with('client')->with('details')
+        ->where('delivery',$request->deliveri)
+        ->whereMonth('fecha',$request->mes)->whereYear('fecha',$request->anio)->get();
+    }
     /**
      * Display the specified resource.
      *
@@ -452,5 +460,18 @@ class SaleController extends Controller
      
         $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>"; 
         return $cadena; 
+    }
+
+    public function informe(Request $request){
+        $ini=$request->ini;
+        $fin=$request->fin;
+        return DB::table('details')
+        ->select('product_id','nombreproducto', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
+        ->join('sales','sales.id','=','details.sale_id')
+        ->where('sales.fecha',">=",$ini)
+        ->where('sales.fecha','<=',$fin)
+        ->where('sales.estado','ACTIVO')
+        ->groupBy('product_id','nombreproducto','precio')
+        ->get();
     }
 }
