@@ -17,7 +17,7 @@ class EmpresaSeeder extends Seeder
         DB::table('empresas')->insert([
             [
                 "nombre"=>'SABOR PERU',
-                "nit"=>'408741025',
+                "nit"=>'1006705025',
                 "telefono"=>'75637071',
                 "direccion"=>'Av. Tacna, Jaen y Tomas Frias',
             ]

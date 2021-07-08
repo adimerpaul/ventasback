@@ -12,6 +12,7 @@ use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Luecano\NumeroALetras\NumeroALetras;
 use Picqer\Barcode\BarcodeGeneratorPNG;
@@ -112,8 +113,14 @@ class SaleController extends Controller
             $dosage->nrofactura=$dosage->nrofactura+1;
             $dosage->save();
             $nit_cliente = $request->cinit;
-            $fecha_compra = date('Ymd');
-            $monto_compra = (int)$request->total;
+//            $fecha_compra = date('Ymd');
+//            $date = new Date($request->fecha);
+//            $fc =$date->format('Ymd');
+//            $fecha_compra =date_format($request->fecha, 'Ymd');
+             $date = date_create($request->fecha);
+//            return  date_format($date, 'Ymd');;
+            $fecha_compra =date_format($date, 'Ymd');
+            $monto_compra = round($request->total);
             $clave = $dosage->llave;
             $codigo = New \CodigoControlV7();
             $codigocontrol=$codigo::generar($numero_autorizacion, $numero_factura, $nit_cliente, $fecha_compra, $monto_compra, $clave);
@@ -410,56 +417,56 @@ class SaleController extends Controller
         ->where('sales.fecha',$fecha)
         ->where('sales.estado','ACTIVO')
         ->groupBy('product_id','nombreproducto','precio')
-        ->get();   
+        ->get();
         $cadena="<style>
-        .margen{padding: 0px 15px 0px 15px;}        
-        .textoimp{ font-size: small; text-align: center;}  
-        .textor{ font-size: small; text-align: right;}  
-        .textmed{ font-size: small; text-align: left;} 
-        table{border: 1px solid #000; text-align:left; align:center; }  
-        th,td{font-size: x-small;} 
-        hr{border: 1px dashed ;}</style> 
-        <div class='textoimp margen'> 
-        <span>$empresa->nombre</span><br> 
-        <span>$empresa->direccion</span><br> 
-        <span>Tel: $empresa->telefono</span><br> 
-        <span>ORURO - BOLIVIA</span><br> 
-        <span>TOTAL VENTA</span><br> 
-        <hr> 
-        "; 
-         
+        .margen{padding: 0px 15px 0px 15px;}
+        .textoimp{ font-size: small; text-align: center;}
+        .textor{ font-size: small; text-align: right;}
+        .textmed{ font-size: small; text-align: left;}
+        table{border: 1px solid #000; text-align:left; align:center; }
+        th,td{font-size: x-small;}
+        hr{border: 1px dashed ;}</style>
+        <div class='textoimp margen'>
+        <span>$empresa->nombre</span><br>
+        <span>$empresa->direccion</span><br>
+        <span>Tel: $empresa->telefono</span><br>
+        <span>ORURO - BOLIVIA</span><br>
+        <span>TOTAL VENTA</span><br>
+        <hr>
+        ";
+
         $cadena.="<div class='textmed'>Fecha: ".date('Y-m-d H:m:s')."<br>
                 Fecha Caja: ".$fecha."<br>";
- 
-        $cadena.="Usuario:$usuario->name<br> 
-                 <hr><br></div> 
-                 <center> 
-                 <table class='table'> 
-                 <thead> 
-                 <tr> 
-                <th>DESCRIPCION</th> <th>CANTIDAD</th><th>P.U.</th><th>TOTAL</th></tr> 
-                </thead><tbody>"; 
+
+        $cadena.="Usuario:$usuario->name<br>
+                 <hr><br></div>
+                 <center>
+                 <table class='table'>
+                 <thead>
+                 <tr>
+                <th>DESCRIPCION</th> <th>CANTIDAD</th><th>P.U.</th><th>TOTAL</th></tr>
+                </thead><tbody>";
         $total=0;
 
-        foreach ($detalle as $row){ 
-             
-            $cadena.="<tr><td>$row->nombreproducto</td><td>$row->cant</td><td>$row->precio</td><td>$row->total</td></tr>";  
-            $total=$total+$row->total; 
-        } 
-        $cadena.="</tbody></table></center>"; 
-     
-        $total=number_format($total,2); 
-        $d = explode('.',$total); 
-        $entero=$d[0]; 
-        $decimal=$d[1]; 
-        $cadena.="<hr>"; 
-        $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div><br>"; 
+        foreach ($detalle as $row){
+
+            $cadena.="<tr><td>$row->nombreproducto</td><td>$row->cant</td><td>$row->precio</td><td>$row->total</td></tr>";
+            $total=$total+$row->total;
+        }
+        $cadena.="</tbody></table></center>";
+
+        $total=number_format($total,2);
+        $d = explode('.',$total);
+        $entero=$d[0];
+        $decimal=$d[1];
+        $cadena.="<hr>";
+        $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div><br>";
         $formatter = new NumeroALetras();
 
-        $cadena.="  SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos<br>"; 
-     
-        $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>"; 
-        return $cadena; 
+        $cadena.="  SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos<br>";
+
+        $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>";
+        return $cadena;
     }
 
     public function informe(Request $request){
