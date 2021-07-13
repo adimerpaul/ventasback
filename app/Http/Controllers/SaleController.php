@@ -113,13 +113,9 @@ class SaleController extends Controller
             $dosage->nrofactura=$dosage->nrofactura+1;
             $dosage->save();
             $nit_cliente = $request->cinit;
-//            $fecha_compra = date('Ymd');
-//            $date = new Date($request->fecha);
-//            $fc =$date->format('Ymd');
-//            $fecha_compra =date_format($request->fecha, 'Ymd');
-             $date = date_create($request->fecha);
-//            return  date_format($date, 'Ymd');;
-            $fecha_compra =date_format($date, 'Ymd');
+            $fecha_compra = date('Ymd');
+//            $date = date_create($request->fecha);
+//            $fecha_compra =date_format($date, 'Ymd');
             $monto_compra = round($request->total);
             $clave = $dosage->llave;
             $codigo = New \CodigoControlV7();
@@ -192,21 +188,19 @@ class SaleController extends Controller
 //        return CodigoControlV7::generar($numero_autorizacion, $numero_factura, $nit_cliente, $fecha_compra, $monto_compra, $clave);
 ///
         if ($tipo=='F'){
-            $this->factura($sale,$dosage,$client,$empresa);
-        }else{
 //            $this->factura($sale,$dosage,$client,$empresa);
-            echo 1;
+            return response()->json(['tipo'=>'F','sale_id'=>$sale->id],200);
+        }else{
+            return response()->json(['tipo'=>'R','sale_id'=>$sale->id],200);
+//            $this->factura($sale,$dosage,$client,$empresa);
+//            echo 1;
         }
 
     }
-    public function factura($sale,$dosage,$client,$empresa){
-//        echo "FACTURA $sale->id";
-//        $empresa=Empresa::all();
-//        return $empresa->nombre;
-//        echo "as";
-//        exit();
-//        exit;
-        $cadena = "
+    public function comanda($sale_id){
+        $sale=Sale::where('id',$sale_id)->with('dosage')->with('details')->with('user')->with('client')->firstOrFail();
+
+        $cadena = '
             <style>.margen{padding: 0px 15px 0px 15px;}
             .textoimp{ font-size: small; text-align: center;}
             .textor{ font-size: small; text-align: right;}
@@ -214,41 +208,35 @@ class SaleController extends Controller
             table{border: 0px solid #000; text-align:center; align:center; width: 100% }
             th,td{font-size: small;}
             hr{border: 1px dashed ;}</style>
-            <div class='textoimp margen'>
-            <span>$empresa->nombre</span><br>
-            <span>SUCURSAL No 1</span><br>
-            <span>$empresa->direccion</span><br>
-            <span>Tel: $empresa->telefono</span><br>
+            <div class="textoimp margen">
+            <span>'.$sale->dosage->empresa->nombre.'</span><br>
+            <span>'.$sale->dosage->empresa->direccion.'</span><br>
+            <span>Tel: '.$sale->dosage->empresa->telefono.'</span><br>
             <span>ORURO - BOLIVIA</span><br>
             <hr>
-            <span>FACTURA</span><br>
-            <span>NIT: $empresa->nit</span><br>
-            <span>Nro FACTURA:$sale->nrocomprobante</span><br>
-            <span>Nro AUTORIZACION: $dosage->nroautorizacion</span><br>
+            <span>COMANDA #'.$sale->id.'</span><br>
             <hr>
-            ";
-        $cadena.="<div class='textmed'>Fecha: $sale->fecha<br>
-            Señor(es): $client->nombrerazon<br>
-            NIT/CI: $client->cinit
-            <hr></div>";
-        $cadena.="<table><thead><tr>
+            ';
+
+        $cadena.='<div class="textmed">Fecha hora: '.$sale->created_at.'<br>
+            <hr></div>';
+        $cadena.='<table><thead><tr>
                 <th>DESC</th>              <th>CANT</th>     <th>P.U.</th>           <th>IMP</th><tr></thead>
-                <tbody>";
+                <tbody>';
         $details=Detail::where('sale_id',$sale->id)->get();
-//        $cadena.=$details->count();
         foreach ($details as $row){
             $nombrep=$row->nombreproducto;
             $precio=$row->precio;
             $cantidad=$row->cantidad;
             $subtotal=$row->subtotal;
             $cadena.="<tr><td>$nombrep</td><td>$cantidad</td><td>$precio</td><td>$subtotal</td></tr>";
-//            $total=$total+$subtotal;
 
         }
         $cadena.="</tbody></table>";
 
         $total=number_format($sale->total,2);
-        $d = explode('.',$sale->total);
+
+        $d = explode('.',$total);
         $entero=$d[0];
         $decimal=$d[1];
         $formatter = new NumeroALetras();
@@ -259,45 +247,82 @@ class SaleController extends Controller
 
 
         $cadena.="<div class='textmed'>SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos</div>
-    <hr>
-    <div class='textmed'>
-    Cod. de Control: $sale->codigocontrol <br>
-    Fecha Lim. de Emision: ". date("d/m/Y", strtotime($dosage->hasta)) ."<br></div>";
+    <hr>";
 
         //
         $user=User::where('id',$sale->user_id)->firstOrFail();
+        $cadena.="<small> LA ESPERA DE SU PEDIDO ES DE MAXIMO DE 30 MIN <br></small>";
+        $cadena.='<div class="textmed"> <span> PUNTO: '.gethostname().'</span></div>';
+        $cadena.='<div class="textmed"> <span> USUARIO: '.$user->name.'</span></div>';
+        $cadena.='<div class="textmed"> <span> NUMERO: '.$sale->id.'</span></div>';
+        return $cadena;
 
+    }
+    public function factura($sale_id){
+        $sale=Sale::where('id',$sale_id)->with('dosage')->with('details')->with('user')->with('client')->firstOrFail();
+
+        $cadena = '
+            <style>.margen{padding: 0px 15px 0px 15px;}
+            .textoimp{ font-size: small; text-align: center;}
+            .textor{ font-size: small; text-align: right;}
+            .textmed{ font-size: small; text-align: left;}
+            table{border: 0px solid #000; text-align:center; align:center; width: 100% }
+            th,td{font-size: small;}
+            hr{border: 1px dashed ;}</style>
+            <div class="textoimp margen">
+            <span>'.$sale->dosage->empresa->nombre.'</span><br>
+            <span>SUCURSAL No 1</span><br>
+            <span>'.$sale->dosage->empresa->direccion.'</span><br>
+            <span>Tel: '.$sale->dosage->empresa->telefono.'</span><br>
+            <span>ORURO - BOLIVIA</span><br>
+            <hr>
+            <span>FACTURA</span><br>
+            <span>NIT: '.$sale->dosage->empresa->nit.'</span><br>
+            <span>Nro FACTURA:'.$sale->nrocomprobante.'</span><br>
+            <span>Nro AUTORIZACION: '.$sale->dosage->nroautorizacion.'</span><br>
+            <hr>
+            ';
+        $cadena.='<div class="textmed">Fecha: '.$sale->fecha.'<br>
+            Señor(es): '.$sale->client->nombrerazon.'<br>
+            NIT/CI: '.$sale->client->cinit.'
+            <hr></div>';
+        $cadena.='<table><thead><tr>
+                <th>DESC</th>              <th>CANT</th>     <th>P.U.</th>           <th>IMP</th><tr></thead>
+                <tbody>';
+        $details=Detail::where('sale_id',$sale->id)->get();
+        foreach ($details as $row){
+            $nombrep=$row->nombreproducto;
+            $precio=$row->precio;
+            $cantidad=$row->cantidad;
+            $subtotal=$row->subtotal;
+            $cadena.="<tr><td>$nombrep</td><td>$cantidad</td><td>$precio</td><td>$subtotal</td></tr>";
+        }
+        $cadena.="</tbody></table>";
+        $total=number_format($sale->total,2);
+        $d = explode('.',$total);
+        $entero=$d[0];
+        $decimal=$d[1];
+        $formatter = new NumeroALetras();
+        $cadena.=("<div class='textor'>SUBTOTAL: $sale->total Bs.<br>");
+        $cadena.=("TOTAL: $sale->total Bs.</div>");
+        $cadena.="<div class='textmed'>SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos</div>
+    <hr>
+    <div class='textmed'>
+    Cod. de Control: $sale->codigocontrol <br>
+    Fecha Lim. de Emision: ". date("d/m/Y", strtotime($sale->dosage->hasta)) ."<br></div>";
+        $user=User::where('id',$sale->user_id)->firstOrFail();
         $qrCode = new \CodeItNow\BarcodeBundle\Utils\QrCode();
         $qrCode
             ->setText($sale->codigoqr)
             ->setSize(125);
-//            ->setPadding(10)
-//            ->setErrorCorrection('high')
-//            ->setForegroundColor(array('r' => 0, 'g' => 0, 'b' => 0, 'a' => 0))
-//            ->setBackgroundColor(array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 0))
-//            ->setLabel('Scan Qr Code')
-//            ->setLabelFontSize(16)
-//            ->setImageType(QrCode::IMAGE_TYPE_PNG);
-
         $imagen= '<img src="data:'.$qrCode->getContentType().';base64,'.$qrCode->generate().'" />';
-
-//        $generator = new BarcodeGeneratorPNG();
-//        $imagen= '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode('081231723897', $generator::TYPE_CODE_128)) . '">';
-//        $png = QrCode::format('png')->size(512)->generate(1);
-//        $png = base64_encode($png);
-//        $imagen= "<img src='data:image/png;base64," . $png . "'>";
-
         $cadena.="<small class='textoimp'>$imagen</small><br>";
-        $cadena.="<small> ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAIS. EL USO ILICITO DE ESTA SERA SANCIONADO DE ACUERDO A LEY <br>
-    </small>";
-        $cadena.="<div class='textoimp'> <span>$dosage->leyenda</span></div>";
-        $cadena.="<div class='textmed'> <span> PUNTO: ".gethostname()."</span></div>";
-        $cadena.="<div class='textmed'> <span> USUARIO: ".$user->name."</span></div>";
-        $cadena.="<div class='textmed'> <span> NUMERO: $sale->id</span></div>";
-//        $cadena.="<div class='textmed'> <span> VUELTO: ".($cancelado-$total)."</span></div></div>";
-
-        echo $cadena;
-
+        $cadena.="<small> ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAIS. EL USO ILICITO DE ESTA SERA SANCIONADO DE ACUERDO A LEY <br></small>";
+        $cadena.='<div class="textoimp"> <span>'.$sale->dosage->leyenda.'</span></div>';
+        $cadena.='<div class="textmed"> <span> PUNTO: '.gethostname().'</span></div>';
+        $cadena.='<div class="textmed"> <span> USUARIO: '.$user->name.'</span></div>';
+        $cadena.='<div class="textmed"> <span> NUMERO: '.$sale->id.'</span></div>';
+        return $cadena;
     }
 
     public function buscar($fecha){

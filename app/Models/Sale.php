@@ -35,4 +35,7 @@ class Sale extends Model
     public function client(){
         return $this->belongsTo(Client::class);
     }
+    public function dosage(){
+        return $this->belongsTo(Dosage::class)->with('empresa');
+    }
 }

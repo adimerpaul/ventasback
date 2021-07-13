@@ -31,6 +31,8 @@ Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::apiResource('/product',\App\Http\Controllers\ProductController::class);
     Route::apiResource('/sale',\App\Http\Controllers\SaleController::class);
+    Route::get('/factura/{id}',[\App\Http\Controllers\SaleController::class,'factura']);
+    Route::get('/comanda/{id}',[\App\Http\Controllers\SaleController::class,'comanda']);
     Route::apiResource('/deliveri',\App\Http\Controllers\DeliveriController::class);
     Route::apiResource('/rubro',\App\Http\Controllers\RubroController::class);
     Route::apiResource('/dosage',\App\Http\Controllers\DosageController ::class);

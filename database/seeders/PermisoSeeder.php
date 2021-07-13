@@ -41,6 +41,8 @@ class PermisoSeeder extends Seeder
             ['id'=>24,'nombre'=>'Menu Reportes'],
             ['id'=>25,'nombre'=>'Menu Deliveri'],
             ['id'=>26,'nombre'=>'Modificar Deliveri'],
+            ['id'=>27,'nombre'=>'Resumen dia'],
+            ['id'=>28,'nombre'=>'Grafica productos'],
         ]);
     }
 }
