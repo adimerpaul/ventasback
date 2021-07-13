@@ -15,9 +15,10 @@ class ClientSeeder extends Seeder
     public function run()
     {
         DB::table('clients')->insert([
+            
             [
-                'cinit'=>'1010',
-                'nombrerazon'=>'JUAN PEREZ',
+                'cinit'=>'0',
+                'nombrerazon'=>'S/N',
             ],
             [
                 'cinit'=>'7336199',

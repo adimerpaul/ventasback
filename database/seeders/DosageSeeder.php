@@ -27,15 +27,6 @@ class DosageSeeder extends Seeder
                 "nrofactura"=>2298,
                 "empresa_id"=>1,
             ]
-//            $table->string('nrotramite');
-//            $table->string('nroautorizacion');
-//            $table->string('nrofactini');
-//            $table->string('llave');
-//            $table->date('desde');
-//            $table->date('hasta');
-//            $table->string('leyenda');
-//            $table->boolean('activo');
-//            $table->string('nroFactura');
-        ]);
+            ]);
     }
 }
