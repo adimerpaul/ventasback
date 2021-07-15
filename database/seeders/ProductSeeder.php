@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
     {
         DB::table('products')->insert([
             [
-                "nombre"=>'Lomo salteado',
+                "nombre"=>'LOMO SALTEADO',
                 "imagen"=>'lomo.png',
                 "color"=>'red',
                 "precio"=>'35.00',
@@ -25,7 +25,7 @@ class ProductSeeder extends Seeder
                 "cantidad"=>'15',
             ],
             [
-                "nombre"=>'Aeropuerto',
+                "nombre"=>'AEROPUERTO',
                 "imagen"=>'aeropuerto.png',
                 "color"=>'green',
                 "precio"=>'30.00',
@@ -34,7 +34,7 @@ class ProductSeeder extends Seeder
                 "cantidad"=>'15',
             ],
             [
-                "nombre"=>'Tallarin Salteado',
+                "nombre"=>'TALLARIN SALTEADO',
                 "imagen"=>'tallarin.png',
                 "color"=>'green',
                 "precio"=>'30.00',
@@ -43,7 +43,7 @@ class ProductSeeder extends Seeder
                 "cantidad"=>'15',
             ],
             [
-                "nombre"=>'Arroz Chaufa',
+                "nombre"=>'ARROZ CHAUFA',
                 "imagen"=>'chaufa.png',
                 "color"=>'green',
                 "precio"=>'25.00',
@@ -52,7 +52,7 @@ class ProductSeeder extends Seeder
                 "cantidad"=>'15',
             ],
             [
-                "nombre"=>'Chicha morada',
+                "nombre"=>'CHICHA MORADA',
                 "imagen"=>'chicha.png',
                 "color"=>'blue',
                 "precio"=>'5.00',

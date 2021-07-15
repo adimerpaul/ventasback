@@ -215,11 +215,10 @@ class SaleController extends Controller
             <span>ORURO - BOLIVIA</span><br>
             <hr>
             <span>COMANDA #'.$sale->id.'</span><br>
-            <hr>
-            ';
+            <hr>';
 
-        $cadena.='<div class="textmed">Fecha hora: '.$sale->created_at.'<br>
-            <hr></div>';
+        $cadena.='<div class="textmed">Fecha hora: '.$sale->created_at.'<br><hr></div>';
+        $cadena.='<div class="textmed">Usuario: '.$sale->user->name.'<br><hr></div>';
         $cadena.='<table><thead><tr>
                 <th>DESC</th>              <th>CANT</th>     <th>P.U.</th>           <th>IMP</th><tr></thead>
                 <tbody>';
