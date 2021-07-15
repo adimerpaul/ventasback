@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Logproducto;
+
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -68,9 +70,31 @@ class ProductController extends Controller
     }
 
     public function productadd(Request $request){
-        $product=Product::find($request->id);
-        $product->cantidad=$request->cantidad;
-        return $product->save();
+        $log=new Logproducto();
+        $log->cantidad=$request->cantidad;
+        $log->product_id=$request->id;
+        $log->user_id=$request->user()->id;
+        $log->detalle='Agrega mas Producto';
+        $log->save();
 
+        $product=Product::find($request->id);
+        $product->cantidad+=$request->cantidad;
+        return $product->save();
+    }
+
+    public function productsub(Request $request){
+        $log=new Logproducto();
+        $log->cantidad=$request->cantidad;
+        $log->product_id=$request->id;
+        $log->user_id=$request->user()->id;
+        $log->detalle='Correccion Producto';
+        $log->save();
+
+        $product=Product::find($request->id);
+        if($product->cantidad < $request->cantidad)
+            $product->cantidad=0;
+        else
+            $product->cantidad-=$request->cantidad;
+        return $product->save();
     }
 }
