@@ -330,9 +330,14 @@ class SaleController extends Controller
     }
 
     public function buscar2(Request $request){
+        if($request->deliveri != null)
         return Sale::with('user')->with('client')->with('details')
         ->where('delivery',$request->deliveri)
         ->whereMonth('fecha',$request->mes)->whereYear('fecha',$request->anio)->get();
+        else 
+        return Sale::with('user')->with('client')->with('details')
+        ->whereMonth('fecha',$request->mes)->whereYear('fecha',$request->anio)->get();
+    
     }
     /**
      * Display the specified resource.
