@@ -270,6 +270,7 @@ class SaleController extends Controller
             hr{border: 1px dashed ;}</style>
             <div class="textoimp margen">
             <span>'.$sale->dosage->empresa->nombre.'</span><br>
+            <span>BISTROFOOD S.R.L.</span><br>
             <span>SUCURSAL No 1</span><br>
             <span>'.$sale->dosage->empresa->direccion.'</span><br>
             <span>Tel: '.$sale->dosage->empresa->telefono.'</span><br>
@@ -279,6 +280,8 @@ class SaleController extends Controller
             <span>NIT: '.$sale->dosage->empresa->nit.'</span><br>
             <span>Nro FACTURA:'.$sale->nrocomprobante.'</span><br>
             <span>Nro AUTORIZACION: '.$sale->dosage->nroautorizacion.'</span><br>
+            <hr>
+            <span>EXPENDIO DE COMIDAS EN CAFETERÍAS, CONFITERÍAS, SNACK, HELADERÍAS Y OTROS LOCALES DE COMIDA RÁPIDA</span>
             <hr>
             ';
         $cadena.='<div class="textmed">Fecha: '.$sale->fecha.'<br>
