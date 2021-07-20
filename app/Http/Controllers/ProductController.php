@@ -73,6 +73,7 @@ class ProductController extends Controller
         $log=new Logproducto();
         $log->cantidad=$request->cantidad;
         $log->product_id=$request->id;
+        $log->fecha=date('Y-m-d H:i:s');
         $log->user_id=$request->user()->id;
         $log->detalle='Agrega mas Producto';
         $log->save();
@@ -86,6 +87,8 @@ class ProductController extends Controller
         $log=new Logproducto();
         $log->cantidad=$request->cantidad;
         $log->product_id=$request->id;
+        $log->estado=false;
+        $log->fecha=date('Y-m-d H:i:s');
         $log->user_id=$request->user()->id;
         $log->detalle='Correccion Producto';
         $log->save();

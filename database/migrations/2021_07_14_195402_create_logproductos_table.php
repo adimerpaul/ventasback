@@ -18,6 +18,7 @@ class CreateLogproductosTable extends Migration
             $table->integer('cantidad');
             $table->string('detalle');
             $table->dateTime('fecha')->default(now());
+            $table->boolean('estado')->default(true);
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
