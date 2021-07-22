@@ -81,7 +81,7 @@ class SaleController extends Controller
 //            return 'a';
             $client=new Client();
             $client->cinit=$request->cinit;
-            $client->nombrerazon=$request->nombrerazon;
+            $client->nombrerazon= strtoupper( $request->nombrerazon);
             $client->save();
         }else{
             $id=$client[0]->id;
@@ -89,7 +89,7 @@ class SaleController extends Controller
             $client=Client::find($id);
             $client->update([
                 'cinit'=>$request->cinit,
-                'nombrerazon'=>$request->nombrerazon
+                'nombrerazon'=> strtoupper( $request->nombrerazon)
             ]);
             $client->save();
 //            return $client;
@@ -198,6 +198,7 @@ class SaleController extends Controller
 
     }
     public function comanda($sale_id){
+        $comanda=Sale::whereDate('created_at',now())->get()->count();
         $sale=Sale::where('id',$sale_id)->with('dosage')->with('details')->with('user')->with('client')->firstOrFail();
 
         $cadena = '
@@ -214,7 +215,7 @@ class SaleController extends Controller
             <span>Tel: '.$sale->dosage->empresa->telefono.'</span><br>
             <span>ORURO - BOLIVIA</span><br>
             <hr>
-            <span>COMANDA #'.$sale->id.'</span><br>
+            <span>COMANDA #'.$comanda.'</span><br>
             <hr>';
 
         $cadena.='<div class="textmed">Fecha hora: '.$sale->created_at.'<br><hr></div>';
@@ -250,7 +251,7 @@ class SaleController extends Controller
 
         //
         $user=User::where('id',$sale->user_id)->firstOrFail();
-        $cadena.="<small> LA ESPERA DE SU PEDIDO ES DE MAXIMO DE 30 MIN <br></small>";
+//        $cadena.="<small> LA ESPERA DE SU PEDIDO ES DE MAXIMO DE 30 MIN <br></small>";
         $cadena.='<div class="textmed"> <span> PUNTO: '.gethostname().'</span></div>';
         $cadena.='<div class="textmed"> <span> USUARIO: '.$user->name.'</span></div>';
         $cadena.='<div class="textmed"> <span> NUMERO: '.$sale->id.'</span></div>';
@@ -285,7 +286,7 @@ class SaleController extends Controller
             <hr>
             ';
         $cadena.='<div class="textmed">Fecha: '.$sale->fecha.'<br>
-            Señor(es): '.$sale->client->nombrerazon.'<br>
+            Señor(es): '. strtoupper( $sale->client->nombrerazon).'<br>
             NIT/CI: '.$sale->client->cinit.'
             <hr></div>';
         $cadena.='<table><thead><tr>
@@ -336,10 +337,10 @@ class SaleController extends Controller
         return Sale::with('user')->with('client')->with('details')
         ->where('delivery',$request->deliveri)
         ->whereMonth('fecha',$request->mes)->whereYear('fecha',$request->anio)->get();
-        else 
+        else
         return Sale::with('user')->with('client')->with('details')
         ->whereMonth('fecha',$request->mes)->whereYear('fecha',$request->anio)->get();
-    
+
     }
     /**
      * Display the specified resource.
