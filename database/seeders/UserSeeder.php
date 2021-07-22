@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
                 'email'=>'saborperu@test.com',
                 'name'=>'saborperu',
                 'empresa_id'=>1,
-                'password'=>Hash::make('admin'),
+                'password'=>Hash::make('Admin@2021'),
             ],
         ]);
     }

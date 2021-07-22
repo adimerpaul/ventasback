@@ -380,6 +380,7 @@ class SaleController extends Controller
         $sale=Sale::find($request->id);
         $sale->estado='ANULADO';
         $sale->total=0;
+        $sale->codigocontrol="";
         $sale->save();
 
         $anular=array(

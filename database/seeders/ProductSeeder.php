@@ -22,7 +22,7 @@ class ProductSeeder extends Seeder
                 "precio"=>'35.00',
                 "descripcion"=>'Contiene ingredientes arroz papa',
                 "rubro_id"=>'1',
-                "cantidad"=>'15',
+                "cantidad"=>'0',
             ],
             [
                 "nombre"=>'AEROPUERTO',
@@ -31,7 +31,7 @@ class ProductSeeder extends Seeder
                 "precio"=>'30.00',
                 "descripcion"=>'Contiene ingredientes arroz papa',
                 "rubro_id"=>'1',
-                "cantidad"=>'15',
+                "cantidad"=>'0',
             ],
             [
                 "nombre"=>'TALLARIN SALTEADO',
@@ -40,7 +40,7 @@ class ProductSeeder extends Seeder
                 "precio"=>'30.00',
                 "descripcion"=>'Contiene ingredientes fideo y verduras ',
                 "rubro_id"=>'1',
-                "cantidad"=>'15',
+                "cantidad"=>'0',
             ],
             [
                 "nombre"=>'ARROZ CHAUFA',
@@ -49,7 +49,7 @@ class ProductSeeder extends Seeder
                 "precio"=>'25.00',
                 "descripcion"=>'Contiene ingredientes arroz y verduras',
                 "rubro_id"=>'1',
-                "cantidad"=>'15',
+                "cantidad"=>'0',
             ],
             [
                 "nombre"=>'CHICHA MORADA',
@@ -58,7 +58,7 @@ class ProductSeeder extends Seeder
                 "precio"=>'5.00',
                 "descripcion"=>'Jugo morado',
                 "rubro_id"=>'2',
-                "cantidad"=>'15',
+                "cantidad"=>'0',
             ],
 
         ]);

@@ -16,15 +16,16 @@ class DosageSeeder extends Seeder
     {
         DB::table('dosages')->insert([
             [
-                "nrotramite"=>'1',
-                "nroautorizacion"=>'278801600000494',
-                "nrofactini"=>2298,
-                "llave"=>'Rj229Pj+iPnB@D$U{cS[f-U*k5D@CsI4(2]M$$RWn2GF%PaDbaVVxSLd-wBsLbGE',
-                "desde"=>'2021-06-15',
-                "hasta"=>'2021-12-31',
-                "leyenda"=>'Ley N° 453: Tienes derecho a un trato equitativo sin discriminacion en la oferta de servicios.',
+                "nrotramite"=>'400003153414',
+                "nroautorizacion"=>'384401110196992',
+                "nrofactini"=>1,
+                "llave"=>'2+ZA+aCN3Nyw7rVUWDCu-6wnK-CRpPBG[+8+T4_Zz]a=cAJu-#B-h\PVY=E[KMG%',
+                "desde"=>'2021-07-21',
+                "hasta"=>'2022-01-17',
+                "leyenda"=>'Ley N° 453: El proveedor debe exhibir certificaciones de habilitación o documentos que acrediten las capacidades u ofertas de servicios
+especializados.',
                 "activo"=>1,
-                "nrofactura"=>2298,
+                "nrofactura"=>1,
                 "empresa_id"=>1,
             ]
             ]);
