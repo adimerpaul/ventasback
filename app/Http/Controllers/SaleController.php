@@ -282,7 +282,7 @@ class SaleController extends Controller
             <span>Nro FACTURA:'.$sale->nrocomprobante.'</span><br>
             <span>Nro AUTORIZACION: '.$sale->dosage->nroautorizacion.'</span><br>
             <hr>
-            <span>EXPENDIO DE COMIDAS EN CAFETERÍAS, CONFITERÍAS, SNACK, HELADERÍAS Y OTROS LOCALES DE COMIDA RÁPIDA</span>
+            <span style="size: 9px" >Expendio de comidas en cafeterías, confiterías, snack, heladerías y otros locales de comida rápida</span>
             <hr>
             ';
         $cadena.='<div class="textmed">Fecha: '.$sale->fecha.'<br>
@@ -450,7 +450,7 @@ class SaleController extends Controller
         ->where('sales.user_id',$id)
         ->where('sales.fecha',$fecha)
         ->where('sales.estado','ACTIVO')
-        ->where('sales.delivery','')
+
         ->groupBy('product_id','nombreproducto','precio')
         ->get();
         $cadena="<style>
@@ -516,7 +516,7 @@ class SaleController extends Controller
         ->where('sales.fecha',$fecha)
         ->where('sales.estado','ACTIVO')
         ->where('sales.tipo','R')
-        ->where('sales.delivery','<>','')
+
         ->groupBy('product_id','nombreproducto','precio')
         ->get();
         $cadena="<style>
@@ -582,7 +582,7 @@ class SaleController extends Controller
         ->where('sales.fecha',$fecha)
         ->where('sales.estado','ACTIVO')
         ->where('sales.tipo','F')
-        ->where('sales.delivery','')
+
         ->groupBy('product_id','nombreproducto','precio')
         ->get();
         $cadena="<style>
