@@ -44,7 +44,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 "nombre"=>'ARROZ CHAUFA',
-                "imagen"=>'chaufa.png',
+                "imagen"=>'chaufa.jpeg',
                 "color"=>'green',
                 "precio"=>'25.00',
                 "descripcion"=>'Contiene ingredientes arroz y verduras',
