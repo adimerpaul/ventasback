@@ -245,7 +245,7 @@ class SaleController extends Controller
         //$cadena.=("DESC:   0.00 Bs.<br>");
         $cadena.=("TOTAL: $sale->total Bs.</div>");
 
-
+        $entero=str_replace(',','',$entero);
         $cadena.="<div class='textmed'>SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos</div>
     <hr>";
 
@@ -308,6 +308,7 @@ class SaleController extends Controller
         $formatter = new NumeroALetras();
         $cadena.=("<div class='textor'>SUBTOTAL: $sale->total Bs.<br>");
         $cadena.=("TOTAL: $sale->total Bs.</div>");
+        $entero=str_replace(',','',$entero);
         $cadena.="<div class='textmed'>SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos</div>
     <hr>
     <div class='textmed'>
@@ -497,9 +498,10 @@ class SaleController extends Controller
         $decimal=$d[1];
         $cadena.="<hr>";
         $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div><br>";
+        //return $cadena.'   ----   -----  '.$total;
         $formatter = new NumeroALetras();
-
-        $cadena.="  SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos<br>";
+        $entero=str_replace(',','',$entero);
+        $cadena.="  SON: ".$formatter->toWords((int)$entero)." $decimal/100 Bolivianos<br>";
 
         $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>";
         return $cadena;
@@ -564,7 +566,7 @@ class SaleController extends Controller
         $cadena.="<hr>";
         $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div><br>";
         $formatter = new NumeroALetras();
-
+        $entero=str_replace(',','',$entero);
         $cadena.="  SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos<br>";
 
         $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>";
@@ -630,7 +632,7 @@ class SaleController extends Controller
         $cadena.="<hr>";
         $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div><br>";
         $formatter = new NumeroALetras();
-
+        $entero=str_replace(',','',$entero);
         $cadena.="  SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos<br>";
 
         $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>";
@@ -695,7 +697,7 @@ class SaleController extends Controller
         $cadena.="<hr>";
         $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div><br>";
         $formatter = new NumeroALetras();
-
+        $entero=str_replace(',','',$entero);
         $cadena.="  SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos<br>";
 
         $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>";
