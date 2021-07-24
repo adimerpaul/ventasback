@@ -253,7 +253,6 @@ class SaleController extends Controller
         $user=User::where('id',$sale->user_id)->firstOrFail();
 //        $cadena.="<small> LA ESPERA DE SU PEDIDO ES DE MAXIMO DE 30 MIN <br></small>";
         $cadena.='<div class="textmed"> <span> PUNTO: '.gethostname().'</span></div>';
-        $cadena.='<div class="textmed"> <span> USUARIO: '.$user->name.'</span></div>';
         $cadena.='<div class="textmed"> <span> NUMERO: '.$sale->id.'</span></div>';
         return $cadena;
 
@@ -270,8 +269,8 @@ class SaleController extends Controller
             th,td{font-size: small;}
             hr{border: 1px dashed ;}</style>
             <div class="textoimp margen">
-            <span>'.$sale->dosage->empresa->nombre.'</span><br>
-            <span>BISTROFOOD S.R.L.</span><br>
+            <span style="font-size:medium">'.$sale->dosage->empresa->nombre.'</span><br>
+            <span style="font-size: x-small">BISTROFOOD S.R.L.</span><br>
             <span>SUCURSAL No 1</span><br>
             <span>'.$sale->dosage->empresa->direccion.'</span><br>
             <span>Tel: '.$sale->dosage->empresa->telefono.'</span><br>
