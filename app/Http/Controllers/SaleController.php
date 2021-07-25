@@ -396,7 +396,7 @@ class SaleController extends Controller
     public function resumen(Request $request){
         $id=$request->id;
         $fecha=$request->fecha;
-        return Sale::with('client')->where('user_id',$id)->where('delivery','')->where('fecha',$fecha)->get();
+        return Sale::with('client')->where('user_id',$id)->where('fecha',$fecha)->get();
     }
 
     public function resproducto(Request $request){
@@ -407,7 +407,6 @@ class SaleController extends Controller
         ->join('sales','sales.id','=','details.sale_id')
         ->where('sales.user_id',$id)
         ->where('sales.fecha',$fecha)
-        ->where('sales.delivery','')
         ->where('sales.estado','ACTIVO')
         ->groupBy('product_id','nombreproducto','precio')
         ->get();
