@@ -382,16 +382,17 @@ class SaleController extends Controller
         $sale->total=0;
         $sale->codigocontrol="";
         $sale->save();
-
+        $detalle=Detail::where('sale_id',$request->id)->get();
+        foreach ($detalle as $r) {
+            $product=Product::find($r->product_id);
+            $product->cantidad+=$r->cantidad;
+            $product->save();
+        }
         $anular=array(
         'motivo'=>$request->motivo,
         'user_id'=>$request->user_id,
         'sale_id'=>$request->id);
         return Anulado::create($anular);
-    }
-
-    public function imprimir(){
-
     }
 
     public function resumen(Request $request){
