@@ -348,9 +348,25 @@ class SaleController extends Controller
      * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function show(Sale $sale)
+    public function show($codigo)
     {
-        //
+//        return "a";
+        $conn = mysqli_connect("165.227.143.191", "myuser", "mypass", "tarjetaplaza");
+// Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $result = $conn->query("SELECT * from cliente where codigo='$codigo'");
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while($row = $result->fetch_assoc()) {
+//                echo $row["nombre"];
+                return json_encode($row);
+            }
+        } else {
+            echo "0";
+        }
+        $conn->close();
     }
 
     /**
