@@ -43,6 +43,8 @@ class SaleController extends Controller
 //        return Empresa::all();
 //        exit;
 
+
+
         require('codigocontrol/CodigoControlV7.php');
 //        $numero_autorizacion = '29040011007';
 //        $numero_factura = '1503';
@@ -163,6 +165,33 @@ class SaleController extends Controller
             $sale->save();
 //            return $sale;
         }
+
+        $conn = mysqli_connect("165.227.143.191", "myuser", "mypass", "tarjetaplaza");
+// Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $result = $conn->query("SELECT * from cliente where codigo='".$request->codigo."'");
+        if ($result->num_rows > 0) {
+
+            while($row = $result->fetch_assoc()) {
+//                echo $row["nombre"];
+//                return json_encode($row);
+                $conn->query("UPDATE cliente SET saldo=saldo-".$request->total." where codigo='".$request->codigo."'");
+                $conn->query("INSERT INTO historial SET
+                fecha='".date("Y-m-d")."',
+                lugar='SABOR PERU',
+                monto='".$request->total."',
+                numero='".$sale->id."',
+                cliente_id='".$row["id"]."'
+                ");
+            }
+            // output data of each row
+
+        } else {
+            echo "0";
+        }
+        $conn->close();
 //        return $request->delivery;
         foreach ($request->details as $row){
 //            echo $row['product_id'].'<br>';
