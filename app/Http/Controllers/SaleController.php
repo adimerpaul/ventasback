@@ -189,7 +189,7 @@ class SaleController extends Controller
             // output data of each row
 
         } else {
-            echo "0";
+//            echo "0";
         }
         $conn->close();
 //        return $request->delivery;
