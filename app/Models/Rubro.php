@@ -16,6 +16,6 @@ class Rubro extends Model
     ];
     protected $hidden = ["created_at", "updated_at"];
     public function products(){
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class)->where('activo',1);
     }
 }

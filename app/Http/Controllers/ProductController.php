@@ -100,4 +100,17 @@ class ProductController extends Controller
             $product->cantidad-=$request->cantidad;
         return $product->save();
     }
+
+    public function activarprod(Request $request)
+    {
+        //
+        $producto=Product::find($request->id);
+        if($producto->activo==1)
+            $producto->activo=0;
+        else {
+            $producto->activo=1;
+        }
+        $producto->save();
+        return $producto;
+    }
 }
