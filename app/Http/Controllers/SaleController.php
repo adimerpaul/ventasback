@@ -136,6 +136,7 @@ class SaleController extends Controller
             $sale->user_id=$request->user()->id;
             $sale->dosage_id=$dosage->id;
             $sale->client_id=$client->id;
+            $sale->tarjeta=$request->tarjeta;
             $sale->save();
         }else{
 //            $numero_autorizacion = $dosage->nroautorizacion;
@@ -162,11 +163,12 @@ class SaleController extends Controller
             $sale->user_id=$request->user()->id;
             $sale->dosage_id=$dosage->id;
             $sale->client_id=$client->id;
+            $sale->tarjeta=$request->tarjeta;
             $sale->save();
 //            return $sale;
         }
         $ctarjeta=$this->hexToStr($request->codigo);
-        $conn = mysqli_connect("165.227.143.191", "myuser", "mypass", "tarjetaplaza");
+        $conn = mysqli_connect("165.227.143.191", "myuser", "ORRKWKtehUul1p4z", "tarjetaplaza");
 // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
@@ -201,6 +203,7 @@ class SaleController extends Controller
 
             $detail=new Detail();
             $detail->sale_id=$sale->id;
+            $sale->tarjeta=$request->tarjeta;
             $detail->user_id=$request->user()->id;
             $detail->product_id=$row['product_id'];
             $detail->cantidad=$row['cantidad'];
@@ -381,7 +384,7 @@ class SaleController extends Controller
     {
 //        return "a";
         $codigo=$this->hexToStr($codigo);
-        $conn = mysqli_connect("165.227.143.191", "myuser", "mypass", "tarjetaplaza");
+        $conn = mysqli_connect("165.227.143.191", "myuser", "ORRKWKtehUul1p4z", "tarjetaplaza");
 // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
