@@ -203,13 +203,14 @@ class SaleController extends Controller
 
             $detail=new Detail();
             $detail->sale_id=$sale->id;
-            $sale->tarjeta=$request->tarjeta;
+            $detail->tarjeta=$request->tarjeta;
             $detail->user_id=$request->user()->id;
             $detail->product_id=$row['product_id'];
             $detail->cantidad=$row['cantidad'];
             $detail->nombreproducto=$row['nombre'];
             $detail->precio=$row['precio'];
             $detail->subtotal=$row['subtotal'];
+
             $detail->save();
 //            return $detail;
         }
