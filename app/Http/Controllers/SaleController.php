@@ -168,7 +168,7 @@ class SaleController extends Controller
 //            return $sale;
         }
         $ctarjeta=$this->hexToStr($request->codigo);
-        $conn = mysqli_connect("165.227.143.191", "myuser", "ORRKWKtehUul1p4z", "tarjetaplaza");
+        $conn = mysqli_connect("10.200.100.19", "example_user", "password", "tarjetaplaza");
 // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
@@ -385,7 +385,7 @@ class SaleController extends Controller
     {
 //        return "a";
         $codigo=$this->hexToStr($codigo);
-        $conn = mysqli_connect("165.227.143.191", "myuser", "ORRKWKtehUul1p4z", "tarjetaplaza");
+        $conn = mysqli_connect("10.200.100.19", "example_user", "password", "tarjetaplaza");
 // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
