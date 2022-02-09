@@ -13,6 +13,8 @@ class Detail extends Model
         "nombreproducto",
         "precio",
         "subtotal",
+        "tarjeta",
+        "credito",
         "sale_id",
         "user_id",
         "producto_id",

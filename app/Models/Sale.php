@@ -18,6 +18,8 @@ class Sale extends Model
         "estado",
         "nrocomprobante",
         "monto",
+        "tarjeta",
+        "credito",
         "user_id",
         "dosage_id",
         "client_id",
