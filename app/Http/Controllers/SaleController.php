@@ -522,7 +522,7 @@ class SaleController extends Controller
         ->where('sales.user_id',$id)
         ->where('sales.fecha',$fecha)
         ->where('sales.estado','ACTIVO')
-
+        ->where('sales.tarjeta','NO')
         ->groupBy('details.credito')
         ->get();
         $cadena="<style>
