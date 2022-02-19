@@ -823,4 +823,237 @@ class SaleController extends Controller
         ->groupBy('product_id','nombreproducto','color','details.precio')
         ->get();
     }
+
+    public function todoimprimirresumen(Request $request){
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
+        $empresa= Empresa::find(1);
+        $detalle=DB::table('details')
+        ->select('product_id','nombreproducto','details.tarjeta', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
+        ->join('sales','sales.id','=','details.sale_id')
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
+        ->where('sales.estado','ACTIVO')
+
+        ->groupBy('product_id','nombreproducto','precio','details.tarjeta')
+        ->get();
+
+        $detalle2=DB::table('details')
+        ->select('details.credito',DB::raw('SUM(subtotal) as total'))
+        ->join('sales','sales.id','=','details.sale_id')
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
+        
+        ->where('sales.estado','ACTIVO')
+        ->where('sales.tarjeta','NO')
+        ->groupBy('details.credito')
+        ->get();
+        $cadena="<style>
+        .margen{padding: 0px 15px 0px 15px;}
+        .textoimp{ font-size: small; text-align: center;}
+        .textor{ font-size: small; text-align: right;}
+        .textmed{ font-size: small; text-align: left;}
+        table{border: 1px solid #000; text-align:left; align:center; }
+        th,td{font-size: x-small;}
+        hr{border: 1px dashed ;}</style>
+        <div class='textoimp margen'>
+        <span>$empresa->nombre</span><br>
+        <span>$empresa->direccion</span><br>
+        <span>Tel: $empresa->telefono</span><br>
+        <span>ORURO - BOLIVIA</span><br>
+        <span>TOTAL VENTA</span><br>
+        <hr>
+        ";
+
+        $cadena.="<div class='textmed'>Fecha: ".date('Y-m-d H:m:s')."<br>
+                Fecha Caja: ".$fecha1." al ".$fecha2."<br>";
+
+        $cadena.="Usuario: TODOS <br>
+                 <hr><br></div>
+                 <center>
+                 <table class='table'>
+                 <thead>
+                 <tr>
+                <th>DESCRIPCION</th> <th>CANTIDAD</th><th>P.U.</th><th>TOTAL</th></tr>
+                </thead><tbody>";
+        $total=0;
+        $totaltarjeta=0;
+        $totalcredito=0;
+        $totalefectivo=0;
+
+        foreach ($detalle as $row){
+            $cadena.="<tr><td>$row->nombreproducto</td><td>$row->cant</td><td>$row->precio</td><td>$row->total</td></tr>";
+            if($row->tarjeta=='SI')
+                $totaltarjeta=$totaltarjeta+$row->total;
+            else
+                $total=$total+$row->total;
+        }
+        $cadena.="</tbody></table></center>";
+
+        foreach ($detalle2 as $row){
+            if($row->credito=='SI')
+                $totalcredito=$row->total;
+            else
+                $totalefectivo=$row->total;
+        }
+        $totalcredito=number_format($totalcredito,2);
+        $totalefectivo=number_format($totalefectivo,2);
+        $total=number_format($total,2);
+        $totaltarjeta=number_format($totaltarjeta,2);
+        $d = explode('.',$total);
+        $entero=$d[0];
+        $decimal=$d[1];
+        $cadena.="<hr>";
+        $cadena.="<br><div class='textor'>VIP: $totaltarjeta Bs.</div>";
+        $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div>";
+        $cadena.="<br><div class='textor'>EFECTIVO: $totalefectivo Bs.</div>";
+        $cadena.="<br><div class='textor'>TCREDITO: $totalcredito Bs.</div>";
+        //return $cadena.'   ----   -----  '.$total;
+        $formatter = new NumeroALetras();
+        $entero=str_replace(',','',$entero);
+        $cadena.="  SON: ".$formatter->toWords((int)$entero)." $decimal/100 Bolivianos<br>";
+
+        $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>";
+        return $cadena;
+    }
+
+    public function todoimprimirresumenrec(Request $request){
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
+        $empresa= Empresa::find(1);
+        $detalle=DB::table('details')
+        ->select('product_id','nombreproducto','details.tarjeta', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
+        ->join('sales','sales.id','=','details.sale_id')
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
+
+        ->where('sales.estado','ACTIVO')
+        ->where('sales.tipo','R')
+
+        ->groupBy('product_id','nombreproducto','precio','details.tarjeta')
+        ->get();
+        $cadena="<style>
+        .margen{padding: 0px 15px 0px 15px;}
+        .textoimp{ font-size: small; text-align: center;}
+        .textor{ font-size: small; text-align: right;}
+        .textmed{ font-size: small; text-align: left;}
+        table{border: 1px solid #000; text-align:left; align:center; }
+        th,td{font-size: x-small;}
+        hr{border: 1px dashed ;}</style>
+        <div class='textoimp margen'>
+        <span>$empresa->nombre</span><br>
+        <span>$empresa->direccion</span><br>
+        <span>Tel: $empresa->telefono</span><br>
+        <span>ORURO - BOLIVIA</span><br>
+        <span>TOTAL VENTA RECIBO</span><br>
+        <hr>
+        ";
+
+        $cadena.="<div class='textmed'>Fecha: ".date('Y-m-d H:m:s')."<br>
+                Fecha Caja: ".$fecha1." al ".$fecha2."<br>";
+
+        $cadena.="Usuario: TODOS<br>
+                 <hr><br></div>
+                 <center>
+                 <table class='table'>
+                 <thead>
+                 <tr>
+                <th>DESCRIPCION</th> <th>CANTIDAD</th><th>P.U.</th><th>TOTAL</th></tr>
+                </thead><tbody>";
+        $total=0;
+        $totaltarjeta=0;
+
+        foreach ($detalle as $row){
+
+            $cadena.="<tr><td>$row->nombreproducto</td><td>$row->cant</td><td>$row->precio</td><td>$row->total</td></tr>";
+            if($row->tarjeta=="SI")
+                $totaltarjeta=$totaltarjeta+$row->total;
+            else
+                $total=$total+$row->total;
+        }
+        $cadena.="</tbody></table></center>";
+
+        $totaltarjeta=number_format($totaltarjeta,2);
+        $total=number_format($total,2);
+        $d = explode('.',$total);
+        $entero=$d[0];
+        $decimal=$d[1];
+        $cadena.="<hr>";
+        $cadena.="<br><div class='textor'>VIP: $totaltarjeta Bs.</div>";
+        $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div><br>";
+        $formatter = new NumeroALetras();
+        $entero=str_replace(',','',$entero);
+        $cadena.="  SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos<br>";
+
+        $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>";
+        return $cadena;
+    }
+
+    public function todoimprimirresumenfac(Request $request){
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
+        $empresa= Empresa::find(1);
+        $detalle=DB::table('details')
+        ->select('product_id','nombreproducto','details.tarjeta', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
+        ->join('sales','sales.id','=','details.sale_id')
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
+
+        ->where('sales.estado','ACTIVO')
+        ->where('sales.tipo','F')
+
+        ->groupBy('product_id','nombreproducto','precio','details.tarjeta')
+        ->get();
+        $cadena="<style>
+        .margen{padding: 0px 15px 0px 15px;}
+        .textoimp{ font-size: small; text-align: center;}
+        .textor{ font-size: small; text-align: right;}
+        .textmed{ font-size: small; text-align: left;}
+        table{border: 1px solid #000; text-align:left; align:center; }
+        th,td{font-size: x-small;}
+        hr{border: 1px dashed ;}</style>
+        <div class='textoimp margen'>
+        <span>$empresa->nombre</span><br>
+        <span>$empresa->direccion</span><br>
+        <span>Tel: $empresa->telefono</span><br>
+        <span>ORURO - BOLIVIA</span><br>
+        <span>TOTAL VENTA FACTURA</span><br>
+        <hr>
+        ";
+
+        $cadena.="<div class='textmed'>Fecha: ".date('Y-m-d H:m:s')."<br>
+                Fecha Caja: ".$fecha1." al ".$fecha2."<br>";
+
+        $cadena.="Usuario: TODOS<br>
+                 <hr><br></div>
+                 <center>
+                 <table class='table'>
+                 <thead>
+                 <tr>
+                <th>DESCRIPCION</th> <th>CANTIDAD</th><th>P.U.</th><th>TOTAL</th></tr>
+                </thead><tbody>";
+        $total=0;
+        $totaltarjeta=0;
+
+        foreach ($detalle as $row){
+
+            $cadena.="<tr><td>$row->nombreproducto</td><td>$row->cant</td><td>$row->precio</td><td>$row->total</td></tr>";
+            if($row->tarjeta=='SI')
+                $totaltarjeta=$totaltarjeta+$row->total;
+            else
+                $total=$total+$row->total;
+        }
+        $cadena.="</tbody></table></center>";
+
+        $total=number_format($total,2);
+        $totaltarjeta=number_format($totaltarjeta,2);
+        $d = explode('.',$total);
+        $entero=$d[0];
+        $decimal=$d[1];
+        $cadena.="<hr>";
+        $cadena.="<br><div class='textor'>VIP: $totaltarjeta Bs.</div>";
+        $cadena.="<br><div class='textor'>TOTAL: $total Bs.</div><br>";
+        $formatter = new NumeroALetras();
+        $entero=str_replace(',','',$entero);
+        $cadena.="  SON: ".$formatter->toWords($entero)." $decimal/100 Bolivianos<br>";
+
+        $cadena.= "<br><br><br><span style='font-size: x-small;'>ENTREGE CONFORME &nbsp; &nbsp; &nbsp; &nbsp;  RECIBI CONFORME<span></div>";
+        return $cadena;
+    }
 }
