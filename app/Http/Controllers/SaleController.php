@@ -458,18 +458,20 @@ class SaleController extends Controller
 
     public function resumen(Request $request){
         $id=$request->id;
-        $fecha=$request->fecha;
-        return Sale::with('client')->where('user_id',$id)->where('fecha',$fecha)->get();
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
+        return Sale::with('client')->where('user_id',$id)->whereDate('fecha','>=',$fecha1)->whereDate('fecha','<=',$fecha2)->get();
     }
 
     public function resproducto(Request $request){
         $id=$request->id;
-        $fecha=$request->fecha;
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
         return DB::table('details')
         ->select('product_id','nombreproducto', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
         ->join('sales','sales.id','=','details.sale_id')
         ->where('sales.user_id',$id)
-        ->where('sales.fecha',$fecha)
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
         ->where('sales.estado','ACTIVO')
         ->groupBy('product_id','nombreproducto','precio')
         ->get();
@@ -503,14 +505,15 @@ class SaleController extends Controller
 
     public function imprimirresumen(Request $request){
         $id=$request->id;
-        $fecha=$request->fecha;
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
         $empresa= Empresa::find(1);
         $usuario=User::find($id);
         $detalle=DB::table('details')
         ->select('product_id','nombreproducto','details.tarjeta', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
         ->join('sales','sales.id','=','details.sale_id')
         ->where('sales.user_id',$id)
-        ->where('sales.fecha',$fecha)
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
         ->where('sales.estado','ACTIVO')
 
         ->groupBy('product_id','nombreproducto','precio','details.tarjeta')
@@ -520,7 +523,7 @@ class SaleController extends Controller
         ->select('details.credito',DB::raw('SUM(subtotal) as total'))
         ->join('sales','sales.id','=','details.sale_id')
         ->where('sales.user_id',$id)
-        ->where('sales.fecha',$fecha)
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
         ->where('sales.estado','ACTIVO')
         ->where('sales.tarjeta','NO')
         ->groupBy('details.credito')
@@ -543,7 +546,7 @@ class SaleController extends Controller
         ";
 
         $cadena.="<div class='textmed'>Fecha: ".date('Y-m-d H:m:s')."<br>
-                Fecha Caja: ".$fecha."<br>";
+                Fecha Caja: ".$fecha1." al ".$fecha2."<br>";
 
         $cadena.="Usuario:$usuario->name<br>
                  <hr><br></div>
@@ -596,14 +599,15 @@ class SaleController extends Controller
 
     public function imprimirresumenrec(Request $request){
         $id=$request->id;
-        $fecha=$request->fecha;
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
         $empresa= Empresa::find(1);
         $usuario=User::find($id);
         $detalle=DB::table('details')
         ->select('product_id','nombreproducto','details.tarjeta', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
         ->join('sales','sales.id','=','details.sale_id')
         ->where('sales.user_id',$id)
-        ->where('sales.fecha',$fecha)
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
         ->where('sales.estado','ACTIVO')
         ->where('sales.tipo','R')
 
@@ -627,7 +631,7 @@ class SaleController extends Controller
         ";
 
         $cadena.="<div class='textmed'>Fecha: ".date('Y-m-d H:m:s')."<br>
-                Fecha Caja: ".$fecha."<br>";
+                Fecha Caja: ".$fecha1." al ".$fecha2."<br>";
 
         $cadena.="Usuario:$usuario->name<br>
                  <hr><br></div>
@@ -668,14 +672,15 @@ class SaleController extends Controller
 
     public function imprimirresumenfac(Request $request){
         $id=$request->id;
-        $fecha=$request->fecha;
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
         $empresa= Empresa::find(1);
         $usuario=User::find($id);
         $detalle=DB::table('details')
         ->select('product_id','nombreproducto','details.tarjeta', DB::raw('SUM(cantidad) as cant'),'precio',DB::raw('SUM(subtotal) as total'))
         ->join('sales','sales.id','=','details.sale_id')
         ->where('sales.user_id',$id)
-        ->where('sales.fecha',$fecha)
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
         ->where('sales.estado','ACTIVO')
         ->where('sales.tipo','F')
 
@@ -699,7 +704,7 @@ class SaleController extends Controller
         ";
 
         $cadena.="<div class='textmed'>Fecha: ".date('Y-m-d H:m:s')."<br>
-                Fecha Caja: ".$fecha."<br>";
+                Fecha Caja: ".$fecha1." al ".$fecha2."<br>";
 
         $cadena.="Usuario:$usuario->name<br>
                  <hr><br></div>
@@ -740,7 +745,8 @@ class SaleController extends Controller
 
     public function imprimirresumendel(Request $request){
         $id=$request->id;
-        $fecha=$request->fecha;
+        $fecha1=$request->fecha;
+        $fecha2=$request->fecha2;
         $empresa= Empresa::find(1);
         $usuario=User::find($id);
         $detalle=DB::table('details')
@@ -748,6 +754,7 @@ class SaleController extends Controller
         ->join('sales','sales.id','=','details.sale_id')
         ->where('sales.user_id',$id)
         ->where('sales.fecha',$fecha)
+        ->whereDate('sales.fecha','>=',$fecha1)->whereDate('sales.fecha','<=',$fecha2)
         ->where('sales.estado','ACTIVO')
         ->where('sales.delivery','<>','')
         ->groupBy('product_id','nombreproducto','precio')
@@ -770,7 +777,7 @@ class SaleController extends Controller
         ";
 
         $cadena.="<div class='textmed'>Fecha: ".date('Y-m-d H:m:s')."<br>
-                Fecha Caja: ".$fecha."<br>";
+                Fecha Caja: ".$fecha1." al ".$fecha2."<br>";
 
         $cadena.="Usuario:$usuario->name<br>
                  <hr><br></div>
