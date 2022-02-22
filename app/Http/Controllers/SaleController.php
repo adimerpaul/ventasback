@@ -480,7 +480,7 @@ class SaleController extends Controller
     public function libro(Request $request){
         return DB::select('
         SELECT (@numero:=@numero+1) as nro,fecha,nrocomprobante,d.nroautorizacion,IF(estado="ACTIVO","V","A") as estado,cinit,c.nombrerazon,
-        "0" as ice, "0" as exenta,"0" as tasa,"0" as rebaja,(total * 0.13) as fiscal, codigocontrol,total
+        "0" as ice, "0" as exenta,"0" as tasa,"0" as rebaja,(total * 0.13) as fiscal, codigocontrol,total,s.id
         FROM sales s
         cross join (select @numero := 0) r
         INNER JOIN dosages d ON d.id=s.dosage_id
@@ -493,7 +493,7 @@ class SaleController extends Controller
     public function libro2(Request $request){
         return DB::select('
         SELECT (@numero:=@numero+1) as nro,fecha,nrocomprobante,d.nroautorizacion,IF(estado="ACTIVO","V","A") as estado,cinit,c.nombrerazon,
-        "0" as ice, "0" as exenta,"0" as tasa,"0" as rebaja,(total * 0.13) as fiscal, codigocontrol,total
+        "0" as ice, "0" as exenta,"0" as tasa,"0" as rebaja,(total * 0.13) as fiscal, codigocontrol,total,s.id
         FROM sales s
         cross join (select @numero := 0) r
         INNER JOIN dosages d ON d.id=s.dosage_id
