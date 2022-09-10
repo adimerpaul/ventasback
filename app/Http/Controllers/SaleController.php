@@ -169,7 +169,7 @@ class SaleController extends Controller
 //            $codigoqr= $empresa->nit."|".$numero_factura.'|'.$numero_autorizacion.'|'.date('Ymd').'|'.$monto_compra.'|'.$monto_compra.'|'.$codigocontrol.'|'.$request->cinit.'|0|0|0|0.00';
             $sale->codigoqr='';
             $sale->delivery=$delivery;
-            $sale->nrocomprobante='';
+            $sale->nrocomprobante=null;
             $sale->monto=$request->monto;
             $sale->user_id=$request->user()->id;
             $sale->dosage_id=$dosage->id;
