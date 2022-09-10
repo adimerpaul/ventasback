@@ -112,6 +112,16 @@ class SaleController extends Controller
         if ($tipo=='F'){
             $numero_autorizacion = $dosage->nroautorizacion;
             $numero_factura = $dosage->nrofactura;
+            if($numero_factura>1){
+                $valida=Sale::where('dosage_id',$dosage->id)->where('tipo','F')->max('nrocomprobante');
+                if($numero_factura != (intval( $valida) + 1))
+                {
+                    $numero_factura=intval( $valida) + 1;
+                    $dosage->nrofactura=$numero_factura;
+                    //return $valida;
+                }
+            }
+
             $dosage->nrofactura=$dosage->nrofactura+1;
             $dosage->save();
             $nit_cliente = $request->cinit;
